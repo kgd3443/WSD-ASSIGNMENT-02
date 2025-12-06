@@ -121,3 +121,62 @@
     font-weight: 600;
 }
 
+/* ===== Hover 시 설명 오버레이 ===== */
+
+/* 기본 상태에서 오버레이는 숨김 */
+.movie-card__overlay {
+    position: absolute;
+    inset: 0;
+    padding: 0.6rem 0.55rem 0.55rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(
+            to top,
+            rgba(15, 23, 42, 0.95),
+            rgba(15, 23, 42, 0.8),
+            rgba(15, 23, 42, 0.0)
+    );
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* 설명 제목 / 본문 */
+.movie-card__overlay-title {
+    margin: 0 0 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.movie-card__overlay-overview {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: #e5e7eb;
+}
+
+/* 이미지와 기본 정보에 트랜지션 추가 */
+.movie-card__image {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.movie-card__info {
+    transition: opacity 0.15s ease;
+}
+
+/* 🔥 hover 시 효과: 카드가 fadeout + 설명이 위로 올라옴 */
+.movie-card:hover .movie-card__image {
+    opacity: 0.15;
+    transform: scale(1.02);
+}
+
+.movie-card:hover .movie-card__info {
+    opacity: 0;
+}
+
+.movie-card:hover .movie-card__overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
