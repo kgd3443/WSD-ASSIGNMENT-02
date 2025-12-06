@@ -1,4 +1,6 @@
+// src/App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/layout/Layout";
 import Home from "./views/Home";
 import SignIn from "./views/SignIn";
 import Popular from "./views/Popular";
@@ -9,11 +11,14 @@ function App() {
     return (
         <BrowserRouter basename={import.meta.env.BASE_URL}>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/popular" element={<Popular />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/wishlist" element={<Wishlist />} />
+
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="signin" element={<SignIn />} />
+                    <Route path="popular" element={<Popular />} />
+                    <Route path="search" element={<Search />} />
+                    <Route path="wishlist" element={<Wishlist />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );
