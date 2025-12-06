@@ -1,12 +1,7 @@
+// src/views/Home.tsx
 import { useEffect, useState } from "react";
 import { fetchPopularMovies } from "../utils/tmdb";
-
-interface Movie {
-    id: number;
-    title: string;
-    poster_path: string | null;
-    overview: string;
-}
+import type { Movie } from "../types/movie";
 
 const Home = () => {
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -18,7 +13,7 @@ const Home = () => {
                 const data = await fetchPopularMovies(1);
                 setMovies(data.results);
             } catch (e) {
-                console.error("Failed to fetch popular movies", e);
+                console.error("인기 영화 불러오기 실패", e);
             } finally {
                 setLoading(false);
             }
