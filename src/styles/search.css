@@ -105,3 +105,54 @@
     opacity: 0.5;
     cursor: default;
 }
+/* 최근 검색어 */
+.search-history {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.search-history__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #cbd5f5;
+}
+
+.search-history__header button {
+    background: transparent;
+    border: none;
+    color: #cbd5f5;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.search-history__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.search-history__item {
+    display: flex;
+    align-items: center;
+    background-color: rgba(15, 23, 42, 0.8);
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    gap: 0.3rem;
+}
+
+.search-history__item span {
+    cursor: pointer;
+    color: #e5e7eb;
+}
+
+.search-history__delete {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+}

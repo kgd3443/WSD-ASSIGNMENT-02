@@ -1,14 +1,16 @@
 // src/views/Search.tsx
-import { FormEvent, useEffect, useState } from "react";
+import type { FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { searchMovies } from "../utils/tmdb";
 import type { Movie, PagedResponse } from "../types/movie";
 import { useWishlist } from "../utils/useWishlist";
+import { useSearchHistory } from "../utils/useSearchHistory";
 import MovieCard from "../components/home/MovieCard";
 import "../styles/search.css";
 
 const Search: React.FC = () => {
-    const [query, setQuery] = useState(""); // 입력 중인 검색어
-    const [submittedQuery, setSubmittedQuery] = useState(""); // 실제 검색에 사용된 검색어
+    const [query, setQuery] = useState("");
+    const [submittedQuery, setSubmittedQuery] = useState("");
     const [movies, setMovies] = useState<Movie[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -16,8 +18,8 @@ const Search: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     const { toggleWishlist, isWishlisted } = useWishlist();
+    const { history, addQuery, removeQuery, clearHistory } = useSearchHistory();
 
-    // 검색 실행 함수
     const performSearch = async (searchText: string, pageNum: number) => {
         if (!searchText.trim()) {
             setMovies([]);
@@ -36,91 +38,99 @@ const Search: React.FC = () => {
             setTotalPages(data.total_pages || 1);
         } catch (e) {
             console.error(e);
-            setError("영화 검색에 실패했습니다. 잠시 후 다시 시도해주세요.");
+            setError("영화 검색에 실패했습니다. 다시 시도해주세요.");
         } finally {
             setLoading(false);
         }
     };
 
-    // 폼 submit 핸들러
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         const trimmed = query.trim();
         if (!trimmed) {
             setError("검색어를 입력해주세요.");
             setMovies([]);
-            setTotalPages(1);
             return;
         }
 
         setPage(1);
         setSubmittedQuery(trimmed);
         performSearch(trimmed, 1);
+        addQuery(trimmed); // ← 최근 검색어 저장
     };
 
-    // 페이지 변경 시 같은 검색어로 다시 조회
+    // 페이지 바뀔 때 재조회
     useEffect(() => {
         if (!submittedQuery) return;
         performSearch(submittedQuery, page);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
-    const handleClear = () => {
-        setQuery("");
-        setSubmittedQuery("");
-        setMovies([]);
+    const handleSelectHistory = (keyword: string) => {
+        setQuery(keyword);
         setPage(1);
-        setTotalPages(1);
-        setError(null);
+        setSubmittedQuery(keyword);
+        performSearch(keyword, 1);
     };
 
     return (
         <section className="search-page">
             <h1>Search</h1>
             <p className="search-page__subtitle">
-                TMDB 영화 제목으로 검색할 수 있습니다. 검색 결과에서 카드를 클릭하면
-                추천(위시리스트)에 추가/제거할 수 있습니다.
+                TMDB 영화 제목 검색. 최근 검색어를 누르면 자동 검색됩니다.
             </p>
 
             {/* 검색 폼 */}
             <form className="search-form" onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    placeholder="영화 제목을 입력하세요 (예: Inception, Interstellar, 기생충)"
+                    placeholder="영화 제목을 입력하세요…"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />
                 <button type="submit">검색</button>
-                <button
-                    type="button"
-                    className="search-form__clear-btn"
-                    onClick={handleClear}
-                >
-                    초기화
+                <button type="button" className="search-form__clear-btn" onClick={() => setQuery("")}>
+                    입력지우기
                 </button>
             </form>
 
-            {/* 상태 메시지 */}
-            {error && <p className="search-page__error">{error}</p>}
+            {/* 최근 검색어 UI */}
+            {history.length > 0 && (
+                <div className="search-history">
+                    <div className="search-history__header">
+                        <span>최근 검색어</span>
+                        <button onClick={clearHistory}>전체 삭제</button>
+                    </div>
 
-            {loading && (
-                <p className="search-page__loading">검색 중입니다. 잠시만 기다려주세요...</p>
+                    <div className="search-history__list">
+                        {history.map((keyword) => (
+                            <div key={keyword} className="search-history__item">
+                                <span onClick={() => handleSelectHistory(keyword)}>{keyword}</span>
+                                <button
+                                    className="search-history__delete"
+                                    onClick={() => removeQuery(keyword)}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             )}
 
-            {!loading && !error && submittedQuery && movies.length === 0 && (
-                <p className="search-page__empty">
-                    &quot;{submittedQuery}&quot; 에 대한 검색 결과가 없습니다.
-                </p>
+            {/* 에러 */}
+            {error && <p className="search-page__error">{error}</p>}
+            {loading && <p className="search-page__loading">검색 중…</p>}
+            {!loading && submittedQuery && movies.length === 0 && (
+                <p className="search-page__empty">검색 결과가 없습니다.</p>
             )}
 
             {/* 검색 결과 */}
             {!loading && movies.length > 0 && (
                 <>
-                    <div className="search-page__result-info">
-            <span>
-              &quot;{submittedQuery}&quot; 검색 결과 (페이지 {page} / {totalPages})
-            </span>
-                    </div>
+                    <p className="search-page__result-info">
+                        &quot;{submittedQuery}&quot; 검색 결과 (페이지 {page} / {totalPages})
+                    </p>
 
                     <div className="search-grid">
                         {movies.map((movie) => (
@@ -142,22 +152,15 @@ const Search: React.FC = () => {
 
                     {/* 페이지네이션 */}
                     <div className="search-page__pagination">
-                        <button
-                            type="button"
-                            onClick={() => setPage((p) => Math.max(1, p - 1))}
-                            disabled={page === 1}
-                        >
+                        <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
                             이전
                         </button>
                         <span>
               {page} / {totalPages}
             </span>
                         <button
-                            type="button"
-                            onClick={() =>
-                                setPage((p) => (p < totalPages ? p + 1 : totalPages))
-                            }
                             disabled={page >= totalPages}
+                            onClick={() => setPage((p) => p + 1)}
                         >
                             다음
                         </button>
