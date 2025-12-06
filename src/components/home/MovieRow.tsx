@@ -5,9 +5,16 @@ import MovieCard from "./MovieCard";
 interface MovieRowProps {
     title: string;
     movies: Movie[];
+    onToggleWishlist: (movie: Movie) => void;
+    isWishlisted: (id: number) => boolean;
 }
 
-const MovieRow: React.FC<MovieRowProps> = ({ title, movies }) => {
+const MovieRow: React.FC<MovieRowProps> = ({
+                                               title,
+                                               movies,
+                                               onToggleWishlist,
+                                               isWishlisted,
+                                           }) => {
     if (!movies.length) return null;
 
     return (
@@ -15,7 +22,12 @@ const MovieRow: React.FC<MovieRowProps> = ({ title, movies }) => {
             <h2 className="movie-row__title">{title}</h2>
             <div className="movie-row__list">
                 {movies.map((movie) => (
-                    <MovieCard key={movie.id} movie={movie} />
+                    <MovieCard
+                        key={movie.id}
+                        movie={movie}
+                        onToggleWishlist={onToggleWishlist}
+                        isWishlisted={isWishlisted(movie.id)}
+                    />
                 ))}
             </div>
         </section>

@@ -97,3 +97,27 @@
         flex: 0 0 120px;
     }
 }
+/* 추천된(위시리스트) 카드 스타일 */
+.movie-card {
+    position: relative;
+    /* 기존 스타일 그대로 두고, position만 추가 */
+}
+
+.movie-card--wishlisted {
+    outline: 2px solid #fbbf24;
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.4),
+    0 16px 40px rgba(15, 23, 42, 1);
+}
+
+.movie-card__badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(250, 204, 21, 0.95);
+    color: #111827;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+

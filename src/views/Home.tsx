@@ -8,6 +8,7 @@ import {
 } from "../utils/tmdb";
 import type { Movie, PagedResponse } from "../types/movie";
 import MovieRow from "../components/home/MovieRow";
+import { useWishlist } from "../utils/useWishlist";
 import "../styles/home.css";
 
 const Home: React.FC = () => {
@@ -17,6 +18,9 @@ const Home: React.FC = () => {
     const [upcoming, setUpcoming] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // LocalStorage 기반 위시리스트 훅
+    const { toggleWishlist, isWishlisted } = useWishlist();
 
     useEffect(() => {
         const load = async () => {
@@ -36,7 +40,6 @@ const Home: React.FC = () => {
                     fetchUpcomingMovies(1),
                 ]);
 
-                // 필요하면 20 ~ 30개 정도로 슬라이스
                 setPopular((popularRes as PagedResponse<Movie>).results.slice(0, 20));
                 setNowPlaying(
                     (nowPlayingRes as PagedResponse<Movie>).results.slice(0, 20)
@@ -81,12 +84,33 @@ const Home: React.FC = () => {
             <h1>Home</h1>
             <p className="home__subtitle">
                 TMDB 데이터를 이용해 인기 콘텐츠를 보여주는 메인 페이지입니다.
+                카드를 클릭하면 추천(위시리스트)에 추가하거나 제거할 수 있어요.
             </p>
 
-            <MovieRow title="지금 인기 있는 영화" movies={popular} />
-            <MovieRow title="현재 상영 중" movies={nowPlaying} />
-            <MovieRow title="최고 평점 영화" movies={topRated} />
-            <MovieRow title="개봉 예정작" movies={upcoming} />
+            <MovieRow
+                title="지금 인기 있는 영화"
+                movies={popular}
+                onToggleWishlist={toggleWishlist}
+                isWishlisted={isWishlisted}
+            />
+            <MovieRow
+                title="현재 상영 중"
+                movies={nowPlaying}
+                onToggleWishlist={toggleWishlist}
+                isWishlisted={isWishlisted}
+            />
+            <MovieRow
+                title="최고 평점 영화"
+                movies={topRated}
+                onToggleWishlist={toggleWishlist}
+                isWishlisted={isWishlisted}
+            />
+            <MovieRow
+                title="개봉 예정작"
+                movies={upcoming}
+                onToggleWishlist={toggleWishlist}
+                isWishlisted={isWishlisted}
+            />
         </section>
     );
 };
