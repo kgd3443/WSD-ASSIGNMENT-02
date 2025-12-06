@@ -1,0 +1,165 @@
+/* src/styles/popular.css */
+
+.popular-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.popular-page__header h1 {
+    margin: 0 0 0.5rem;
+}
+
+.popular-page__subtitle {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: #cbd5f5;
+}
+
+.popular-page__view-toggle {
+    display: inline-flex;
+    border-radius: 999px;
+    padding: 0.15rem;
+    background-color: rgba(15, 23, 42, 0.85);
+}
+
+.popular-page__view-toggle button {
+    border: none;
+    background: transparent;
+    color: #e5e7eb;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.popular-page__view-toggle button.active {
+    background-color: rgba(248, 250, 252, 0.14);
+}
+
+.popular-page__error {
+    color: tomato;
+    font-size: 0.9rem;
+}
+
+.popular-page__loading,
+.popular-page__end {
+    font-size: 0.9rem;
+    color: #e5e7eb;
+}
+
+/* 🔹 Table View 스타일 */
+
+.popular-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.popular-table th,
+.popular-table td {
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.popular-table th {
+    text-align: left;
+    background-color: rgba(15, 23, 42, 0.9);
+}
+
+.popular-row {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.popular-row:hover {
+    background-color: rgba(30, 64, 175, 0.3);
+}
+
+.popular-row--wishlisted {
+    background-color: rgba(250, 204, 21, 0.15);
+}
+
+.popular-table__pagination {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.popular-table__pagination button {
+    border: none;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background-color: rgba(15, 23, 42, 0.9);
+    color: #e5e7eb;
+}
+
+.popular-table__pagination button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* 🔹 Infinite Scroll 스타일 */
+
+.popular-infinite {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.popular-infinite__item {
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.6rem;
+    background-color: rgba(15, 23, 42, 0.9);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.popular-infinite__item:hover {
+    background-color: rgba(30, 64, 175, 0.3);
+    transform: translateY(-2px);
+}
+
+.popular-infinite__item--wishlisted {
+    border: 1px solid rgba(250, 204, 21, 0.7);
+}
+
+.popular-infinite__title {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.popular-infinite__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: #cbd5f5;
+}
+
+.popular-infinite__meta .badge {
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    background-color: rgba(250, 204, 21, 0.95);
+    color: #111827;
+    font-size: 0.7rem;
+}
+
+/* 🔹 Top 버튼 */
+
+.popular-page__top-btn {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    border: none;
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background-color: rgba(15, 23, 42, 0.95);
+    color: #e5e7eb;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
+}

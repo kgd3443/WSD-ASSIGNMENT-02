@@ -1,0 +1,123 @@
+/* src/styles/home.css */
+
+.home__subtitle {
+    margin: 0 0 1.5rem;
+    color: #cbd5f5;
+    font-size: 0.95rem;
+}
+
+/* 섹션 하나 (카테고리 하나) */
+.movie-row {
+    margin-bottom: 2rem;
+}
+
+.movie-row__title {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* 가로 스크롤 리스트 */
+.movie-row__list {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+}
+
+/* 스크롤바 살짝만 보이게 (선택) */
+.movie-row__list::-webkit-scrollbar {
+    height: 6px;
+}
+
+.movie-row__list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.movie-row__list::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.6);
+    border-radius: 999px;
+}
+
+/* 카드 스타일 */
+.movie-card {
+    flex: 0 0 140px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(15, 23, 42, 0.9);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.movie-card__image {
+    width: 100%;
+    display: block;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+.movie-card__placeholder {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1e293b;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.movie-card__info {
+    padding: 0.4rem 0.5rem 0.5rem;
+}
+
+.movie-card__title {
+    margin: 0 0 0.2rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+}
+
+.movie-card__rating {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #e5e7eb;
+}
+
+/* hover 시 살짝 확대 (과제 CSS transition 요구사항에도 도움 됨) */
+.movie-card:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.9);
+}
+
+/* 반응형: 모바일에서 카드 크기 줄이기 */
+@media (max-width: 640px) {
+    .movie-card {
+        flex: 0 0 120px;
+    }
+}
+/* 추천된(위시리스트) 카드 스타일 */
+.movie-card {
+    position: relative;
+    /* 기존 스타일 그대로 두고, position만 추가 */
+}
+
+.movie-card--wishlisted {
+    outline: 2px solid #fbbf24;
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.4),
+    0 16px 40px rgba(15, 23, 42, 1);
+}
+
+.movie-card__badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(250, 204, 21, 0.95);
+    color: #111827;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+

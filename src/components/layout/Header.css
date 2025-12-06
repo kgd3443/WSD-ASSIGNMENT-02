@@ -1,0 +1,13 @@
+/* src/components/layout/Header.css */
+
+/* 임시 스타일 – 나중에 global.css 스타일로 통합 가능 */
+.app-header {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-links a {
+    margin-left: 1rem;
+    color: #ddd;
+    text-decoration: none;
+}
