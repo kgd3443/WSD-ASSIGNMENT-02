@@ -6,9 +6,23 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
+    position: relative;
 }
 
-/* 전체 박스 */
+/* 배경 딤 + 블러 디테일 */
+.signin-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+            circle at center,
+            rgba(15, 23, 42, 0.55),
+            rgba(2, 6, 23, 0.88)
+    );
+    backdrop-filter: blur(4px);
+    z-index: -1;
+}
+
 .signin-shell {
     width: 100%;
     max-width: 520px;
@@ -41,6 +55,11 @@
     font-weight: 700;
 }
 
+.signin-toggle button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 .signin-toggle__highlight {
     position: absolute;
     top: 3px;
@@ -64,13 +83,15 @@
     perspective: 1000px;
 }
 
-/* 실제 3D 카드 */
+/* 3D 카드 */
 .signin-card3d {
     position: relative;
     width: 100%;
-    height: 430px; /* signup이 더 길어서 고정 높이 */
+    height: 430px;
     transform-style: preserve-3d;
-    transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition:
+            transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
+            box-shadow 0.3s ease;
 }
 
 /* 뒤집기 */
@@ -78,7 +99,31 @@
     transform: rotateY(180deg);
 }
 
-/* 앞/뒤 면 공통 */
+/* Hover 부상 디테일 */
+.signin-card3d:hover {
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65);
+    transform: translateY(-4px) rotateX(1deg);
+}
+
+/* 전환 중 hover 과한 움직임 방지 */
+.signin-card3d.transitioning:hover {
+    transform: none;
+}
+
+/* 흔들림(실패 디테일) */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); }
+}
+
+.signin-card3d.shake {
+    animation: shake 0.42s ease;
+}
+
+/* 앞/뒤 면 */
 .signin-face {
     position: absolute;
     inset: 0;
@@ -92,14 +137,18 @@
     gap: 0.75rem;
 }
 
-/* 앞면 */
 .signin-front {
     transform: rotateY(0deg);
 }
 
-/* 뒷면 */
 .signin-back {
     transform: rotateY(180deg);
+}
+
+/* 전환 중 입력 잠금 */
+.signin-face.locked {
+    pointer-events: none;
+    opacity: 0.92;
 }
 
 .signin-face h1 {
@@ -121,6 +170,14 @@
     border-radius: 0.7rem;
     padding: 0.5rem 0.7rem;
     font-size: 0.95rem;
+}
+
+/* 포커스 디테일 */
+.signin-face input:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.35);
+    background: rgba(2, 6, 23, 0.95);
 }
 
 .signin-row {
@@ -161,4 +218,9 @@
     font-size: 0.85rem;
     padding: 0.4rem 0;
     text-align: center;
+}
+
+.signin-ghost:disabled {
+    cursor: not-allowed;
+    opacity: 0.75;
 }
