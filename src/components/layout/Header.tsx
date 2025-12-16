@@ -17,7 +17,7 @@ const Header = () => {
             <div className="app-header__inner">
                 {/* 왼쪽 상단 제목 */}
                 <NavLink to="/" className="app-header__brand">
-                    🎬
+                    🎬♬
                 </NavLink>
 
                 {/* 오른쪽 메뉴 */}
