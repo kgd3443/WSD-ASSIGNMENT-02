@@ -1,26 +1,25 @@
 // src/components/home/MovieRow.tsx
+import { useRef } from "react";
 import type { Movie } from "../../types/movie";
 import MovieCard from "./MovieCard";
+import { useHorizontalWheel } from "../../hooks/useHorizontalWheel";
 
-interface MovieRowProps {
+type Props = {
     title: string;
     movies: Movie[];
     onToggleWishlist: (movie: Movie) => void;
-    isWishlisted: (id: number) => boolean;
-}
+    isWishlisted: (movieId: number) => boolean;
+};
 
-const MovieRow: React.FC<MovieRowProps> = ({
-                                               title,
-                                               movies,
-                                               onToggleWishlist,
-                                               isWishlisted,
-                                           }) => {
-    if (!movies.length) return null;
+const MovieRow = ({ title, movies, onToggleWishlist, isWishlisted }: Props) => {
+    const listRef = useRef<HTMLDivElement>(null);
+    useHorizontalWheel(listRef);
 
     return (
         <section className="movie-row">
             <h2 className="movie-row__title">{title}</h2>
-            <div className="movie-row__list">
+
+            <div ref={listRef} className="movie-row__list">
                 {movies.map((movie) => (
                     <MovieCard
                         key={movie.id}
