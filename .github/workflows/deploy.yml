@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -32,6 +32,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_TMDB_API_KEY: ${{ secrets.VITE_TMDB_API_KEY }}
+          VITE_TMDB_BASE_URL: ${{ secrets.VITE_TMDB_BASE_URL }}
+          VITE_TMDB_IMAGE_BASE_URL: ${{ secrets.VITE_TMDB_IMAGE_BASE_URL }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
