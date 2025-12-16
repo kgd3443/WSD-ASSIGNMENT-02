@@ -1,16 +1,18 @@
+// src/components/home/MovieRow.tsx
 import { useRef } from "react";
-import { useHorizontalWheel } from "../../hooks/useHorizontalWheel";
-import MovieCard from "./MovieCard";
 import type { Movie } from "../../types/movie";
+import MovieCard from "./MovieCard";
+import { useHorizontalWheel } from "../../hooks/useHorizontalWheel";
 
 type Props = {
     title: string;
     movies: Movie[];
+    onToggleWishlist: (movie: Movie) => void;
+    isWishlisted: (movieId: number) => boolean;
 };
 
-const MovieRow = ({ title, movies }: Props) => {
+const MovieRow = ({ title, movies, onToggleWishlist, isWishlisted }: Props) => {
     const listRef = useRef<HTMLDivElement>(null);
-
     useHorizontalWheel(listRef);
 
     return (
@@ -19,7 +21,12 @@ const MovieRow = ({ title, movies }: Props) => {
 
             <div ref={listRef} className="movie-row__list">
                 {movies.map((movie) => (
-                    <MovieCard key={movie.id} movie={movie} />
+                    <MovieCard
+                        key={movie.id}
+                        movie={movie}
+                        onToggleWishlist={onToggleWishlist}
+                        isWishlisted={isWishlisted(movie.id)}
+                    />
                 ))}
             </div>
         </section>
