@@ -9,7 +9,7 @@
     position: relative;
 }
 
-/* 배경 딤 + 블러 디테일 */
+/* 배경 딤 + 블러 */
 .signin-page::before {
     content: "";
     position: fixed;
@@ -83,8 +83,12 @@
     perspective: 1000px;
 }
 
-/* 3D 카드 */
+/* 🔥 핵심 수정 영역 시작 */
+/* transform을 변수로 분리 */
 .signin-card3d {
+    --liftY: 0px;
+    --tiltX: 0deg;
+
     position: relative;
     width: 100%;
     height: 430px;
@@ -92,25 +96,31 @@
     transition:
             transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1),
             box-shadow 0.3s ease;
+
+    transform: translateY(var(--liftY)) rotateX(var(--tiltX));
 }
 
-/* 뒤집기 */
+/* 뒤집기 (rotateY만 추가) */
 .signin-card3d.flipped {
-    transform: rotateY(180deg);
+    transform: translateY(var(--liftY))
+    rotateX(var(--tiltX))
+    rotateY(180deg);
 }
 
-/* Hover 부상 디테일 */
+/* hover는 변수만 변경 */
 .signin-card3d:hover {
+    --liftY: -4px;
+    --tiltX: 1deg;
     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65);
-    transform: translateY(-4px) rotateX(1deg);
 }
 
-/* 전환 중 hover 과한 움직임 방지 */
+/* 전환 중 hover 방지 */
 .signin-card3d.transitioning:hover {
-    transform: none;
+    --liftY: 0px;
+    --tiltX: 0deg;
 }
 
-/* 흔들림(실패 디테일) */
+/* 흔들림 애니메이션 */
 @keyframes shake {
     0% { transform: translateX(0); }
     25% { transform: translateX(-6px); }
@@ -122,6 +132,7 @@
 .signin-card3d.shake {
     animation: shake 0.42s ease;
 }
+/* 🔥 핵심 수정 영역 끝 */
 
 /* 앞/뒤 면 */
 .signin-face {
